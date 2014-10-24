@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Course Project - Developing Data Products</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Course Project - Developing Data Products">
+  <meta name="author" content="Yoseph Mekasha">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Course Project - Developing Data Products</h1>
+    <h2>Calculating Hypotenuse of a right Angle triangle</h2>
+    <p>Yoseph Mekasha<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>What it is?</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>It is a shiny application deployed in shinyapps.io</li>
+<li>It calculates the Hypotenuse of a right angle triangle,  and also displays a plot of the triangle to help users to decide.</li>
+<li>It expects Height and Width (default value of 10 units is given for both)</li>
+<li>As users change height, width or both, the hypotenuse is automatically calculated and a coresponding triangle will be shown on the left panel.</li>
+<li>The applicaton can be found in <a href="https://yosephmekasha.shinyapps.io/calulating-hypoteneus/">shinyapps.io</a></li>
+<li>The Souce code can also be downloaded from <a href="https://github.com/YosephM/calulating-hypoteneus">Github</a></li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>What does it look like?</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src='Home.png' alt="application image" style="width:100%; height:100%"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How is it written? - ui.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r"># ui.r
+library(shiny)
+shinyUI(
+  pageWithSidebar(
+      headerPanel(&quot;Course Project:Calculating Hypotenuse of Right Angle Triangle&quot;),  
+      sidebarPanel(   
+        p( align=&quot;justify&quot;,&quot;This is a simple ... [I have cut the text here to fit it into the slid ... please look at the source] . &quot;),
+        h4(&quot;Give Width and Height:&quot;), 
+        numericInput(&#39;x&#39;,&#39;Width :&#39;,10, min=0, max=500,step=1),
+        numericInput(&#39;y&#39;,&#39;Height :&#39;,10, min=0, max=500,step=1)
+        ),   
+      mainPanel(
+        h2(withMathJax(&quot;$$ z= sqrt(x^2 + y^2)$$&quot;)),
+        plotOutput(&#39;RAT&#39;)  
+
+              )
+      )
+  )
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How is it written? - server.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r"># server.R
+library(shiny)
+library(ggplot2)
+library(data.table)
+shinyServer(
+  function(input,output)
+  {  
+    output$RAT&lt;- renderPlot(
+      {     
+      dt &lt;- data.table( x = c(0,0,{as.numeric(input$x)}), y = c(0,{as.numeric(input$y)},0))
+      z&lt;- sqrt(input$x^2 + input$y^2)      
+      ggplot() + 
+      geom_polygon(data = dt ,aes( x=x ,y=y ) ) + 
+      ggtitle(paste(&quot;The Hypotnous is &quot;,z) ) + ylim(0,max(c(input$x,input$y)) ) + xlim(0,max(c(input$x,input$y)) )
+     }
+    )  
+
+  }
+)
+</code></pre>
+
+<p>--- .class #id</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='What it is?'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='What does it look like?'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='How is it written? - ui.R'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='How is it written? - server.R'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
